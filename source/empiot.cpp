@@ -484,8 +484,8 @@ void* thread_sampler (void* arg) {
 
 
             // when energy computation is enabled, calculate the energy
-            if (energy_type != None) {
-
+            if (energy_type != None && interval_samples > 1) {
+		
                 // power = V * I (Done in volts) where bus_voltage is in V and current in mA
                 float current_power = (current_entry.bus_voltage) * (current_entry.current * 0.001);
                 float previous_power = (previous_entry.bus_voltage) * (previous_entry.current * 0.001);
@@ -512,6 +512,7 @@ void* thread_sampler (void* arg) {
                 
                 // increment to running total of energy
                 total_energy += interval_energy;
+            	//cout << "Interval ENERGY: " << time_diff << ", " << interval_energy<<", "<< total_energy<< "..............................." << endl;
             }
         }
 
@@ -523,7 +524,8 @@ void* thread_sampler (void* arg) {
         cout << "\nFINISHED SAMPLING INTERVAL " << num_triggers << endl;
         cout << "----------------------------" << endl;
 
-        cout << "Number Samples:    " << total_samples << endl;
+        cout << "Total number Samples:    " << total_samples << endl;
+        cout << "Interval Samples:    " << interval_samples << endl;
         // cout << "Time Taken:    " << endl;
         printf("Time Taken: %d seconds\n",  diffy);
         printQuitMessage();

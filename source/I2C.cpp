@@ -24,7 +24,7 @@ I2C::I2C(int bus, int address) {
 		bcm2835_init();
 		bcm2835_i2c_begin();
 		bcm2835_i2c_setSlaveAddress(0x40);
-		bcm2835_i2c_set_baudrate(2000000);
+		bcm2835_i2c_set_baudrate(1500000);
 	#endif
 }
 
