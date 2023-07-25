@@ -424,7 +424,7 @@ void* thread_sampler (void* arg) {
                 continue;
             }
 
-            // In order to get a valid sample, we have to poll the converstion ready bit which notifies that a 
+            // In order to get a valid sample, we have to poll the conversion ready bit, which notifies that a 
             // valid sample is available
             do {
                 bus = driver -> get_bus_voltage_V_set_cvrd();
@@ -688,7 +688,6 @@ void add_double_annotation() {
 
     cout << "Interrupt received - Single" << endl;
 
-
     struct timespec tmp;
     clock_gettime(CLOCK_MONOTONIC, &tmp);
 
@@ -810,8 +809,16 @@ void shared_setup() {
     if (append_arg == false) {
         cout << "Created a new file called " << dataFileName << endl;
         dataFile = fopen(dataFileName.c_str(), "w");
+        
+        if (energy_type == V1 || energy_type == V2)
+        {
+            fprintf(dataFile, "1: identifier, 2: start_time.tv_sec, 3: start_time.tv_nsec, 4: end_time.tv_sec, 5: end_time.tv_nsec, 6: energy_consumption_nj, 7: energy_consumption_j\n");
+        }
+        else
+            fprintf(dataFile, "1: identifier, 2: time.tv_sec, 3: time.tv_nsec , 4: shunt_voltage (mV), 5: bus_voltage (V), current (mA)\n");
+
     } else {
-        cout << "Appending to an existing file called " << dataFileName << endl;
+        cout << "Appending to an existing file; name: " << dataFileName << endl;
         dataFile = fopen(dataFileName.c_str(), "a");
     }
 
@@ -822,7 +829,14 @@ void shared_setup() {
     cout << "Calibrating...!" << endl;
     
     // See INA219.h for more calibration options
-    driver->setCalibration_16V_800mA_12bits();
+    if (true)
+    {
+        driver->setCalibration_32V_1A_12bit();
+        // driver->setCalibration_16V_800mA_12bits();
+        // driver->setCalibration_16V_400mA_12bits();
+        
+        cout << "Calibration type: 16V_800mA_12bits" << endl;    
+    }
     cout << "Calibrating...Done!" << endl;
     
     

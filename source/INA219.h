@@ -105,10 +105,16 @@ class INA219 {
 
 	public:
 	INA219();
+
         void setCalibration_16V_400mA_12bits(void);
         void setCalibration_16V_400mA_9bits(void);
+        
         void setCalibration_16V_800mA_12bits(void);
         void setCalibration_16V_800mA_9bits(void);
+
+        void setCalibration_32V_2A_12bit(void);
+        void setCalibration_32V_1A_12bit(void);
+
 	float& get_current_MA();
 	float& get_shunt_voltage_MV ();
 	float& get_bus_voltage_V();
